@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DoD Egg Calculator</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ===== Header ===== -->
+    <header class="app-header">
+        <h1 class="logo">LOGO</h1>
+        <div class="banner">BANNER (AESTHETIC)</div>
+    </header>
+
+    <!-- ===== Main calculator ===== -->
+    <main class="calculator">
+
+        <!-- Left: Mother -->
+        <section class="panel parent-panel" id="female-panel">
+            <h2 class="parent-title">MOTHER</h2>
+            <div class="sprite sprite-parent" id="female-sprite">
+                <!-- Mother artwork goes here -->
+            </div>
+
+            <div class="pearl-box">
+                <label class="pearl-toggle">
+                    <input type="checkbox" id="female-equipped">
+                    Pearl equipped
+                </label>
+                <label class="pearl-input-label" for="female-pearl">Pearl %</label>
+                <input
+                    type="text"
+                    id="female-pearl"
+                    inputmode="decimal"
+                    placeholder="1 - 10"
+                    autocomplete="off"
+                    disabled
+                >
+            </div>
+        </section>
+
+        <!-- Center: Offspring / results -->
+        <section class="panel child-panel" id="child-panel">
+            <div class="sprite sprite-egg" id="egg-sprite">
+                <!-- Egg / offspring icon goes here -->
+            </div>
+
+            <div class="species-box">
+                <label for="species-select">Species</label>
+                <select id="species-select">
+                    <!-- Options are filled in by JavaScript -->
+                </select>
+            </div>
+
+            <div class="nest-counter">
+                <button type="button" id="nest-minus" aria-label="Remove one nest">-</button>
+                <div class="nest-display">
+                    <span class="counter-label">Nests</span>
+                    <span class="counter-value" id="nest-count">0</span>
+                </div>
+                <button type="button" id="nest-plus" aria-label="Add one nest">+</button>
+            </div>
+
+            <p class="stat">
+                Total eggs: <strong id="total-eggs">0</strong>
+            </p>
+
+            <p class="stat">
+                Chance per egg: <strong id="egg-chance">0.500%</strong>
+            </p>
+
+            <div class="result">
+                <span class="result-label">Cumulative chance</span>
+                <span class="result-value" id="cumulative-chance">0.00%</span>
+            </div>
+
+            <p class="message" id="eggs-message"></p>
+        </section>
+
+        <!-- Right: Father -->
+        <section class="panel parent-panel" id="male-panel">
+            <h2 class="parent-title">FATHER</h2>
+            <div class="sprite sprite-parent" id="male-sprite">
+                <!-- Father artwork goes here -->
+            </div>
+
+            <div class="pearl-box">
+                <label class="pearl-toggle">
+                    <input type="checkbox" id="male-equipped">
+                    Pearl equipped
+                </label>
+                <label class="pearl-input-label" for="male-pearl">Pearl %</label>
+                <input
+                    type="text"
+                    id="male-pearl"
+                    inputmode="decimal"
+                    placeholder="1 - 10"
+                    autocomplete="off"
+                    disabled
+                >
+            </div>
+        </section>
+
+    </main>
+
+    <!-- TEMPORARY: lets us test the model from the console.
+         We will replace this with js/controller.js later. -->
+    <script type="module">
+        import * as model from "./js/model.js";
+        window.model = model;
+    </script>
+
+</body>
+</html>
