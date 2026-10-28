@@ -12,6 +12,12 @@
     <header class="app-header">
         <h1 class="logo">LOGO</h1>
         <div class="banner">BANNER (AESTHETIC)</div>
+            <div class="toolbar">
+            <button type="button" id="export-btn">Export JSON</button>
+            <button type="button" id="import-btn">Import JSON</button>
+            <button type="button" id="reset-btn">Reset</button>
+            <input type="file" id="import-file" accept=".json,application/json" hidden>
+        </div>
     </header>
 
     <!-- ===== Main calculator ===== -->
@@ -72,9 +78,10 @@
             </p>
 
             <div class="result">
-                <span class="result-label">Cumulative chance</span>
+                <span class="result-label">Odds you'd have one by now</span>
                 <span class="result-value" id="cumulative-chance">0.00%</span>
             </div>
+            <p class="note">Every egg is an independent roll. This is a statistic, not a guarantee.</p>
 
             <p class="message" id="eggs-message"></p>
         </section>
