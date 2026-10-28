@@ -19,6 +19,22 @@ const BASE_MUTATION_CHANCE = 0.005;
 export const PEARL_MIN = 1;
 export const PEARL_MAX = 10;
 
+// Pearl rarity tiers. Each tier covers everything up to its "max" percent.
+// Order matters: lowest tier first.
+export const PEARL_RARITIES = [
+    { name: "Common",    slug: "common",    max: 6.9 },
+    { name: "Uncommon",  slug: "uncommon",  max: 7.9 },
+    { name: "Rare",      slug: "rare",      max: 8.9 },
+    { name: "Exotic",    slug: "exotic",    max: 9.9 },
+    { name: "Legendary", slug: "legendary", max: 10 }
+];
+
+// Returns the tier object for a pearl percent (e.g. 8.9 -> Rare)
+export const getPearlRarity = (percent) => {
+    const tier = PEARL_RARITIES.find((rarity) => percent <= rarity.max);
+    return tier ?? PEARL_RARITIES[PEARL_RARITIES.length - 1];
+};
+
 // Everything the app needs to remember
 export const state = {
     species: "Flame Stalker",
@@ -26,7 +42,9 @@ export const state = {
     femaleEquipped: false,
     femalePearl: PEARL_MIN, // percent as typed by the user (e.g. 1.9 = 1.9%)
     maleEquipped: false,
-    malePearl: PEARL_MIN
+    malePearl: PEARL_MIN,
+    found: false,           // did the user get the mutation?
+    foundAtEggs: null       // how many eggs it took (null until found)
 };
 
 // ---------- Helpers ----------
@@ -71,6 +89,18 @@ export const setPearlPercent = (parent, percent) => {
     if (parent === "male") state.malePearl = value;
 };
 
+// ---------- Mutation found ----------
+
+export const markFound = () => {
+    state.found = true;
+    state.foundAtEggs = state.nests * SPECIES[state.species];
+};
+
+export const unmarkFound = () => {
+    state.found = false;
+    state.foundAtEggs = null;
+};
+
 // ---------- Calculations ----------
 
 // Nests -> eggs (the user can't edit eggs directly)
@@ -104,4 +134,44 @@ export const getAverageEggs = () => {
 // Positive = eggs left until the average. Zero or negative = already past it.
 export const getEggsToAverage = () => {
     return Math.ceil(getAverageEggs() - getTotalEggs());
+};
+
+// ---------- Save / load / reset ----------
+
+export const resetState = () => {
+    state.species = "Flame Stalker";
+    state.nests = 0;
+    state.femaleEquipped = false;
+    state.femalePearl = PEARL_MIN;
+    state.maleEquipped = false;
+    state.malePearl = PEARL_MIN;
+    state.found = false;
+    state.foundAtEggs = null;
+};
+
+// A plain copy of the state, ready to become JSON
+export const getSaveData = () => ({
+    app: "dod-egg-calculator",
+    version: 1,
+    ...state
+});
+
+// Loads saved data through the setters, so bad values get fixed or ignored.
+// Returns false if the data isn't an object.
+export const loadSaveData = (data) => {
+    if (typeof data !== "object" || data === null) return false;
+
+    resetState();
+    setSpecies(data.species);
+    setNests(data.nests);
+    setPearlEquipped("female", data.femaleEquipped);
+    setPearlPercent("female", data.femalePearl);
+    setPearlEquipped("male", data.maleEquipped);
+    setPearlPercent("male", data.malePearl);
+
+    if (data.found === true) {
+        state.found = true;
+        state.foundAtEggs = Math.max(0, Math.floor(Number(data.foundAtEggs)) || 0);
+    }
+    return true;
 };

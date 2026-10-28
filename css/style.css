@@ -296,7 +296,7 @@ body {
 }
 
 .banner {
-    padding: 14px 12px;
+    padding: 36px 12px;
     font-size: 0.9rem;
 }
 
@@ -315,7 +315,7 @@ body {
 }
 
 .sprite-egg {
-    max-width: 80px;
+    max-width: 110px;
 }
 
 .pearl-box {
@@ -386,3 +386,89 @@ select {
         grid-template-columns: 1fr;
     }
 }
+
+/* ===== Pearl icon (placeholder circle) ===== */
+.pearl-icon {
+    align-self: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--panel-border);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Equipped pearl: base glow, color depends on rarity */
+.pearl-icon[data-state="on"] {
+    background: #d8d8cf;
+    box-shadow: 0 0 10px #d8d8cf;
+}
+
+.pearl-icon[data-state="on"][data-rarity="common"] {
+    background: #d8d8cf;
+    box-shadow: 0 0 10px #d8d8cf;
+}
+
+.pearl-icon[data-state="on"][data-rarity="uncommon"] {
+    background: #7ed957;
+    box-shadow: 0 0 10px #7ed957;
+}
+
+.pearl-icon[data-state="on"][data-rarity="rare"] {
+    background: #3fb4f0;
+    box-shadow: 0 0 10px #3fb4f0;
+}
+
+.pearl-icon[data-state="on"][data-rarity="exotic"] {
+    background: #c75bf0;
+    box-shadow: 0 0 10px #c75bf0;
+}
+
+.pearl-icon[data-state="on"][data-rarity="legendary"] {
+    background: #f2a03d;
+    box-shadow: 0 0 10px #f2a03d;
+}
+
+/* ===== "I got the mutation!" button ===== */
+.found-btn {
+    width: 100%;
+    padding: 10px 12px;
+    background: transparent;
+    color: var(--child);
+    border: 2px solid var(--child);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.found-btn:hover {
+    background: var(--child);
+    color: #2a1608;
+}
+
+.found-message {
+    margin: 0;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--child);
+}
+
+/* Found state: the whole center panel glows */
+#child-panel[data-found="yes"] {
+    box-shadow: 0 0 18px var(--child);
+}
+
+#child-panel[data-found="yes"] .result-value {
+    color: #ffd9bd;
+}
+
+/* ===== Species art (uncomment each line when the image exists) ===== */
+/*.sprite-parent[data-species="flame-stalker"]   { /* background-image: url("../assets/species/flame-stalker.png"); }*/
+/*.sprite-parent[data-species="blitz-striker"]   { /* background-image: url("../assets/species/blitz-striker.png"); }*/ 
+/*.sprite-parent[data-species="brood-watcher"]   { /* background-image: url("../assets/species/brood-watcher.png"); }*/ 
+/*.sprite-parent[data-species="acid-spitter"]    { /* background-image: url("../assets/species/acid-spitter.png"); }*/ 
+/*.sprite-parent[data-species="biolumin"]        { /* background-image: url("../assets/species/biolumin.png"); }*/
+/*.sprite-parent[data-species="inferno-ravager"] { /* background-image: url("../assets/species/inferno-ravager.png"); }*/ 
+/*.sprite-parent[data-species="shadow-scale"]    { /* background-image: url("../assets/species/shadow-scale.png"); }*/

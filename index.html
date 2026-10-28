@@ -26,11 +26,12 @@
         <!-- Left: Mother -->
         <section class="panel parent-panel" id="female-panel">
             <h2 class="parent-title">MOTHER</h2>
-            <div class="sprite sprite-parent" id="female-sprite">
+            <div class="sprite sprite-parent" id="female-sprite" data-species="flame-stalker"></div>
                 <!-- Mother artwork goes here -->
             </div>
 
             <div class="pearl-box">
+                <span class="pearl-icon" id="female-pearl-icon" data-state="off"></span>
                 <label class="pearl-toggle">
                     <input type="checkbox" id="female-equipped">
                     Pearl equipped
@@ -74,7 +75,7 @@
             </p>
 
             <p class="stat">
-                Chance per egg: <strong id="egg-chance">0.500%</strong>
+                Chance per egg: <strong id="egg-chance">0.5%</strong>
             </p>
 
             <div class="result">
@@ -84,16 +85,20 @@
             <p class="note">Every egg is an independent roll. This is a statistic, not a guarantee.</p>
 
             <p class="message" id="eggs-message"></p>
+
+            <button type="button" id="found-btn" class="found-btn">I got the mutation!</button>
+            <p class="found-message" id="found-message" hidden></p>
         </section>
 
         <!-- Right: Father -->
         <section class="panel parent-panel" id="male-panel">
             <h2 class="parent-title">FATHER</h2>
-            <div class="sprite sprite-parent" id="male-sprite">
+            <div class="sprite sprite-parent" id="male-sprite" data-species="flame-stalker"></div>
                 <!-- Father artwork goes here -->
             </div>
 
             <div class="pearl-box">
+                <span class="pearl-icon" id="male-pearl-icon" data-state="off"></span>
                 <label class="pearl-toggle">
                     <input type="checkbox" id="male-equipped">
                     Pearl equipped
@@ -112,12 +117,6 @@
 
     </main>
 
-    <!-- TEMPORARY: lets us test the model from the console.
-         We will replace this with js/controller.js later. -->
-    <script type="module">
-        import * as model from "./js/model.js";
-        window.model = model;
-    </script>
-
+    <script type="module" src="js/controller.js"></script>
 </body>
 </html>
