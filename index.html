@@ -128,14 +128,112 @@
 
     </main>
 
-        <!-- ===== Footer: file buttons ===== -->
+    <!-- ===== Footer: file buttons ===== -->
     <footer class="toolbar">
+        <button type="button" id="info-btn">Info</button>
         <button type="button" id="export-btn">Export JSON</button>
         <button type="button" id="import-btn">Import JSON</button>
         <button type="button" id="reset-btn">Reset</button>
         <input type="file" id="import-file" accept=".json,application/json" hidden>
     </footer>
-    
+
+    <!-- ===== Info panel ===== -->
+    <dialog id="info-dialog" class="info-dialog" aria-labelledby="info-title">
+        <div class="info-header">
+            <h2 id="info-title">About this calculator</h2>
+            <button type="button" id="info-close" class="info-close" aria-label="Close">×</button>
+        </div>
+
+        <div class="info-body">
+
+            <section>
+                <h3>What it calculates</h3>
+                <p>
+                    The chance of getting a <strong>mutation</strong> (Albino or Piebald) from your eggs.
+                    Both have the same chance. Which one you get depends on the parents' skins,
+                    which this tool doesn't track.
+                </p>
+            </section>
+
+            <section>
+                <h3>How it's calculated</h3>
+                <ol>
+                    <li>
+                        <strong>Chance per egg</strong><br>
+                        <code>P = 0.005 × (1 + female pearl + male pearl)</code><br>
+                        The base chance is 0.5%. Each pearl is written as a decimal (5% = 0.05).
+                        A parent without a pearl adds 0.
+                    </li>
+                    <li>
+                        <strong>Total eggs</strong><br>
+                        <code>nests × eggs per nest</code> (the number depends on the species).
+                    </li>
+                    <li>
+                        <strong>Odds you'd have one by now</strong><br>
+                        <code>(1 − (1 − P)<sup>eggs</sup>) × 100</code><br>
+                        The chance that at least one of your eggs was a mutation.
+                    </li>
+                    <li>
+                        <strong>Average</strong><br>
+                        <code>1 ÷ P</code> eggs. With no pearls that is 1 in 200 eggs.
+                    </li>
+                </ol>
+
+                <table class="info-table">
+                    <thead>
+                        <tr><th>Pearls</th><th>Chance per egg</th><th>Average</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>None</td><td>0.5%</td><td>1 in 200</td></tr>
+                        <tr><td>One at 1.9%</td><td>0.5095%</td><td>1 in 196</td></tr>
+                        <tr><td>1.9% + 8.9%</td><td>0.554%</td><td>1 in 181</td></tr>
+                        <tr><td>10% + 10%</td><td>0.6%</td><td>1 in 167</td></tr>
+                    </tbody>
+                </table>
+                <p class="info-small">
+                    Pearls scale the base chance, they don't add percentage points:
+                    a 5% pearl makes 0.5% become 0.525%.
+                </p>
+            </section>
+
+            <section class="info-note">
+                <h3>Good to know!!</h3>
+                <p>
+                    You can reach the average number of eggs and still not get a mutation.
+                    That's how probability works: every egg is an independent roll, there is
+                    no pity system, and nothing here is a guarantee. The odds are a statistic,
+                    not a promise.
+                </p>
+            </section>
+
+            <section>
+                <h3>Where the info comes from</h3>
+                <p>
+                    The formula and the pearl behavior come from information shared by the
+                    Day of Dragons community. It was not taken from the game's code, so it may
+                    be wrong or change if the game is updated.
+                </p>
+            </section>
+
+            <section>
+                <h3>Credits</h3>
+                <p>
+                    Made by Yuuriiri
+                </p>
+            </section>
+
+            <section>
+                <h3>Terms</h3>
+                <p>
+                    Made by fans, for fans. This is an unofficial tool, not affiliated with or
+                    endorsed by the game's developers. Free to use. Your hunts are saved only
+                    in your own browser.
+                </p>
+            </section>
+
+        </div>
+    </dialog>
+
     <script type="module" src="js/controller.js"></script>
 </body>
 </html>

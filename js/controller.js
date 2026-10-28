@@ -34,6 +34,9 @@ const el = {
     importBtn: document.getElementById("import-btn"),
     importFile: document.getElementById("import-file"),
     resetBtn: document.getElementById("reset-btn"),
+    infoBtn: document.getElementById("info-btn"),
+    infoDialog: document.getElementById("info-dialog"),
+    infoClose: document.getElementById("info-close"),
     slotTabs: document.querySelectorAll(".slot-tab"),
     slotName: document.getElementById("slot-name"),
     female: {
@@ -183,6 +186,17 @@ el.resetBtn.addEventListener("click", () => {
     resetState();
     syncInputs();
     update();
+});
+
+// ---------- Info panel ----------
+
+el.infoBtn.addEventListener("click", () => el.infoDialog.showModal());
+el.infoClose.addEventListener("click", () => el.infoDialog.close());
+
+// Click on the dark area outside the panel closes it.
+// (Clicks inside the panel have a child as target, so they are ignored.)
+el.infoDialog.addEventListener("click", (event) => {
+    if (event.target === el.infoDialog) el.infoDialog.close();
 });
 
 // ---------- Startup ----------
