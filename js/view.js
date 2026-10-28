@@ -4,6 +4,7 @@
 import {
     SPECIES,
     state,
+    slotsState,
     getTotalEggs,
     getEggChance,
     getCumulativeChance,
@@ -25,6 +26,8 @@ const el = {
     childPanel: document.getElementById("child-panel"),
     foundBtn: document.getElementById("found-btn"),
     foundMessage: document.getElementById("found-message"),
+    slotTabs: document.querySelectorAll(".slot-tab"),
+    slotName: document.getElementById("slot-name"),
 
     female: {
         sprite: document.getElementById("female-sprite"),
@@ -78,6 +81,15 @@ const renderFound = () => {
     }
 };
 
+// Writes each tab's name and marks the open slot.
+// The name box is not touched here (see syncInputs).
+const renderSlots = () => {
+    el.slotTabs.forEach((tab, index) => {
+        tab.textContent = slotsState.names[index];
+        tab.dataset.active = index === slotsState.active ? "yes" : "no";
+    });
+};
+
 // Updates one parent: sprite species, checkbox state, pearl icon.
 // Does NOT touch the text input's value (see syncInputs).
 const renderParent = (parent, equipped, percent) => {
@@ -116,6 +128,7 @@ export const syncInputs = () => {
     el.speciesSelect.value = state.species;
     el.female.input.value = String(state.femalePearl).replace(".", ",");
     el.male.input.value = String(state.malePearl).replace(".", ",");
+    el.slotName.value = slotsState.names[slotsState.active];
 };
 
 // Redraws everything that depends on the model. Safe to call as often as you like.
@@ -130,4 +143,5 @@ export const render = () => {
     renderParent("male", state.maleEquipped, state.malePearl);
     renderMessage();
     renderFound();
+    renderSlots();
 };

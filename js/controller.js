@@ -3,6 +3,7 @@
 
 import {
     state,
+    slotsState,
     changeNests,
     setSpecies,
     setPearlEquipped,
@@ -11,7 +12,12 @@ import {
     unmarkFound,
     resetState,
     getSaveData,
-    loadSaveData
+    loadSaveData,
+    getSlotsSaveData,
+    loadSlotsData,
+    getSlotName,
+    renameSlot,
+    switchSlot
 } from "./model.js";
 import { populateSpecies, syncInputs, render } from "./view.js";
 
@@ -28,6 +34,8 @@ const el = {
     importBtn: document.getElementById("import-btn"),
     importFile: document.getElementById("import-file"),
     resetBtn: document.getElementById("reset-btn"),
+    slotTabs: document.querySelectorAll(".slot-tab"),
+    slotName: document.getElementById("slot-name"),
     female: {
         checkbox: document.getElementById("female-equipped"),
         input: document.getElementById("female-pearl")
@@ -38,20 +46,21 @@ const el = {
     }
 };
 
-// ---------- Browser storage (autosave) ----------
+// ---------- Browser storage (autosave of all slots) ----------
 
 const saveToBrowser = () => {
     try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(getSaveData()));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(getSlotsSaveData()));
     } catch (error) {
         console.warn("Could not save to the browser:", error);
     }
 };
 
+// Also reads the old single-hunt save, which becomes slot 1
 const loadFromBrowser = () => {
     try {
         const text = localStorage.getItem(STORAGE_KEY);
-        if (text) loadSaveData(JSON.parse(text));
+        if (text) loadSlotsData(JSON.parse(text));
     } catch (error) {
         console.warn("Could not read the saved data:", error);
     }
@@ -64,6 +73,25 @@ const update = () => {
     render();
     saveToBrowser();
 };
+
+// ---------- Slots ----------
+
+el.slotTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+        switchSlot(Number(tab.dataset.slot));
+        syncInputs();
+        update();
+    });
+});
+
+// While typing: rename the slot (the model trims and limits the name)
+el.slotName.addEventListener("input", () => {
+    renameSlot(slotsState.active, el.slotName.value);
+    update();
+});
+
+// When leaving the box: show the cleaned-up name
+el.slotName.addEventListener("change", syncInputs);
 
 // ---------- Nests, species, mutation found ----------
 
@@ -115,10 +143,11 @@ const setupParent = (parent) => {
 setupParent("female");
 setupParent("male");
 
-// ---------- Export / Import / Reset ----------
+// ---------- Export / Import / Reset (current hunt only) ----------
 
 el.exportBtn.addEventListener("click", () => {
-    const json = JSON.stringify(getSaveData(), null, 2);
+    const hunt = { ...getSaveData(), name: getSlotName(slotsState.active) };
+    const json = JSON.stringify(hunt, null, 2);
     const blob = new Blob([json], { type: "application/json" });
     const link = document.createElement("a");
     const today = new Date().toISOString().slice(0, 10);
@@ -139,6 +168,7 @@ el.importFile.addEventListener("change", async () => {
     try {
         const data = JSON.parse(await file.text());
         if (!loadSaveData(data)) throw new Error("Not a valid save file");
+        if (data.name) renameSlot(slotsState.active, data.name);
         syncInputs();
         update();
     } catch (error) {
@@ -149,7 +179,7 @@ el.importFile.addEventListener("change", async () => {
 });
 
 el.resetBtn.addEventListener("click", () => {
-    if (!confirm("Reset everything to zero?")) return;
+    if (!confirm("Reset this hunt to zero?")) return;
     resetState();
     syncInputs();
     update();

@@ -10,13 +10,24 @@
 
     <!-- ===== Header ===== -->
     <header class="app-header">
-        <h1 class="logo">LOGO</h1>
-        <div class="banner">BANNER (AESTHETIC)</div>
-            <div class="toolbar">
-            <button type="button" id="export-btn">Export JSON</button>
-            <button type="button" id="import-btn">Import JSON</button>
-            <button type="button" id="reset-btn">Reset</button>
-            <input type="file" id="import-file" accept=".json,application/json" hidden>
+        <div class="banner">
+            <h1 class="logo">LOGO</h1>
+        </div>
+
+        <div class="slot-bar">
+            <div class="slot-tabs">
+                <button type="button" class="slot-tab" data-slot="0"></button>
+                <button type="button" class="slot-tab" data-slot="1"></button>
+                <button type="button" class="slot-tab" data-slot="2"></button>
+            </div>
+            <input
+                type="text"
+                id="slot-name"
+                maxlength="24"
+                placeholder="Hunt name (e.g. Melanistic Piebald)"
+                autocomplete="off"
+                aria-label="Hunt name"
+            >
         </div>
     </header>
 
@@ -117,6 +128,14 @@
 
     </main>
 
+        <!-- ===== Footer: file buttons ===== -->
+    <footer class="toolbar">
+        <button type="button" id="export-btn">Export JSON</button>
+        <button type="button" id="import-btn">Import JSON</button>
+        <button type="button" id="reset-btn">Reset</button>
+        <input type="file" id="import-file" accept=".json,application/json" hidden>
+    </footer>
+    
     <script type="module" src="js/controller.js"></script>
 </body>
 </html>

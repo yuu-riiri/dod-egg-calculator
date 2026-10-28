@@ -464,6 +464,117 @@ select {
     color: #ffd9bd;
 }
 
+/* ===== Save slots ===== */
+.slot-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.slot-tabs {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+    max-width: 480px;
+}
+
+.slot-tab {
+    flex: 1;
+    min-width: 0;
+    padding: 7px 10px;
+    background: var(--panel-bg);
+    color: var(--text-muted);
+    border: 2px solid var(--panel-border);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.slot-tab:hover {
+    border-color: var(--child);
+    color: var(--text);
+}
+
+.slot-tab[data-active="yes"] {
+    background: var(--child);
+    border-color: var(--child);
+    color: #2a1608;
+    font-weight: 700;
+}
+
+#slot-name {
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+}
+
+/* ===== Compact header v2: logo inside banner, slots in one row ===== */
+.banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 12px;
+    background-size: cover;
+    background-position: center;
+}
+
+.logo {
+    margin: 0;
+}
+
+.slot-bar {
+    flex-direction: row;
+    max-width: 720px;
+    margin: 8px auto 0;
+}
+
+.slot-tabs {
+    flex: 1 1 auto;
+    max-width: none;
+}
+
+#slot-name {
+    flex: 0 0 210px;
+    width: auto;
+    max-width: none;
+    text-align: left;
+}
+
+/* ===== Footer toolbar ===== */
+.toolbar {
+    max-width: 720px;
+    margin: 14px auto 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--panel-border);
+}
+
+.toolbar button {
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.toolbar button:hover {
+    color: var(--text);
+}
+
+/* ===== Very narrow screens ===== */
+@media (max-width: 560px) {
+    .slot-bar {
+        flex-direction: column;
+    }
+
+    #slot-name {
+        flex: none;
+        width: 100%;
+    }
+}
+
 /* ===== Species art (uncomment each line when the image exists) ===== */
 /*.sprite-parent[data-species="flame-stalker"]   { /* background-image: url("../assets/species/flame-stalker.png"); }*/
 /*.sprite-parent[data-species="blitz-striker"]   { /* background-image: url("../assets/species/blitz-striker.png"); }*/ 
