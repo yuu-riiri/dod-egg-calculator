@@ -175,3 +175,94 @@ export const loadSaveData = (data) => {
     }
     return true;
 };
+
+// ---------- Save slots ----------
+
+export const SLOT_COUNT = 3;
+export const NAME_MAX_LENGTH = 24;
+
+const defaultName = (index) => `Hunt ${index + 1}`;
+
+// Which slot is open, plus every slot's name and saved data.
+// A save of null means the slot is empty.
+export const slotsState = {
+    active: 0,
+    names: Array.from({ length: SLOT_COUNT }, (_, i) => defaultName(i)),
+    saves: Array.from({ length: SLOT_COUNT }, () => null)
+};
+
+const isValidSlot = (index) =>
+    Number.isInteger(index) && index >= 0 && index < SLOT_COUNT;
+
+// Trims, collapses repeated spaces and cuts to the max length.
+// An empty name falls back to the default ("Hunt 1").
+const cleanName = (name, index) => {
+    const text = String(name ?? "").replace(/\s+/g, " ").trim();
+    return text.slice(0, NAME_MAX_LENGTH).trim() || defaultName(index);
+};
+
+// Copies the current hunt into the active slot
+export const saveActiveSlot = () => {
+    slotsState.saves[slotsState.active] = getSaveData();
+};
+
+// Puts the active slot's data on screen (or a blank hunt if it's empty)
+const applyActiveSlot = () => {
+    const save = slotsState.saves[slotsState.active];
+    if (save) {
+        loadSaveData(save);
+    } else {
+        resetState();
+    }
+};
+
+export const getSlotName = (index) => slotsState.names[index];
+
+export const renameSlot = (index, name) => {
+    if (!isValidSlot(index)) return;
+    slotsState.names[index] = cleanName(name, index);
+};
+
+// Saves the current hunt, then opens another slot
+export const switchSlot = (index) => {
+    if (!isValidSlot(index) || index === slotsState.active) return;
+    saveActiveSlot();
+    slotsState.active = index;
+    applyActiveSlot();
+};
+
+// Everything the browser needs to remember
+export const getSlotsSaveData = () => {
+    saveActiveSlot();
+    return {
+        app: "dod-egg-calculator",
+        version: 2,
+        active: slotsState.active,
+        names: [...slotsState.names],
+        saves: [...slotsState.saves]
+    };
+};
+
+// Restores everything. Also accepts the old single-hunt format
+// (version 1), which becomes the content of slot 1.
+export const loadSlotsData = (data) => {
+    if (typeof data !== "object" || data === null) return false;
+
+    if (Array.isArray(data.saves)) {
+        for (let i = 0; i < SLOT_COUNT; i++) {
+            slotsState.names[i] = cleanName(data.names?.[i], i);
+            const save = data.saves[i];
+            slotsState.saves[i] =
+                typeof save === "object" && save !== null ? save : null;
+        }
+        slotsState.active = isValidSlot(data.active) ? data.active : 0;
+    } else {
+        // Old format: one hunt saved on its own
+        slotsState.saves = Array.from({ length: SLOT_COUNT }, () => null);
+        slotsState.saves[0] = data;
+        slotsState.active = 0;
+    }
+
+    applyActiveSlot();
+    return true;
+};
